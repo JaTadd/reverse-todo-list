@@ -1,4 +1,4 @@
-name: worflow for dev
+name: CI/CD for dev
 
 on:
   push:
@@ -43,10 +43,10 @@ jobs:
           cd frontend
           npm test
 
-      - name: Merge dev to main
-        uses: pascalgn/automerge-action@v0.15.5
+      - name: Create Pull Request to Merge dev into main
+        uses: peter-evans/create-pull-request@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Merge dev into main
+          title: Merge dev into main
