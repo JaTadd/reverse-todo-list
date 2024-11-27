@@ -1,4 +1,4 @@
-name: CI/CD for dev
+name: worflow for dev
 
 on:
   push:
@@ -47,6 +47,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          base: main
+          branch: dev-to-main
           commit-message: Merge dev into main
           title: Merge dev into main
