@@ -1,4 +1,4 @@
-name: CI/CD for main
+name: worflow for main
 
 on:
   push:
