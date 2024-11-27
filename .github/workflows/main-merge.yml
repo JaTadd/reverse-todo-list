@@ -17,33 +17,37 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-        working-directory: ./backend
+
+      - name: Install dependencies for Backend
+        run: |
+          cd backend
+          npm install
+
+      - name: Run Backend Unit Tests
+        run: |
+          cd backend
+          npm test
 
       - name: Setup Node.js for Frontend
         uses: actions/setup-node@v3
         with:
           node-version: 16
-        working-directory: ./frontend
-
-      - name: Install dependencies for Backend
-        run: npm install
-        working-directory: ./backend
 
       - name: Install dependencies for Frontend
-        run: npm install
-        working-directory: ./frontend
-
-      - name: Run Backend Unit Tests
-        run: npm test
-        working-directory: ./backend
+        run: |
+          cd frontend
+          npm install
 
       - name: Run Frontend Unit Tests
-        run: npm test
-        working-directory: ./frontend
+        run: |
+          cd frontend
+          npm test
 
       - name: Run E2E Tests
-        run: npm run e2e
-        working-directory: ./e2e-tests
+        run: |
+          cd e2e-tests
+          npm install
+          npm run e2e
 
       - name: Build Docker Images
         run: docker-compose build
