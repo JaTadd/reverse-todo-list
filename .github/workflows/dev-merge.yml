@@ -1,4 +1,4 @@
-name: worflow for dev
+name: Feature to Dev CI
 
 on:
   push:
@@ -13,47 +13,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js for Backend
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: Install dependencies for Backend
+      - name: Install dependencies for backend
         run: |
           cd backend
           npm install
 
-      - name: Run Backend Unit Tests
+      - name: Run backend unit tests
         run: |
           cd backend
           npm test
 
-      - name: Setup Node.js for Frontend
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: Install dependencies for Frontend
+      - name: Install dependencies for frontend
         run: |
           cd frontend
           npm install
 
-      - name: Run Frontend Unit Tests
+      - name: Run frontend unit tests
         run: |
           cd frontend
           npm test
 
-      - name: Create Pull Request to Merge dev into main
-        uses: actions/github-script@v6
+      - name: Merge dev to main
+        if: success()
+        uses: devmasx/merge-branch@v1.3.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { data: pullRequest } = await github.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              head: "dev", // Branche source
-              base: "main", // Branche cible
-              title: "Merge dev into main",
-              body: "This PR merges the latest changes from dev into main.",
-            });
-            console.log(`Pull request created: ${pullRequest.html_url}`);
+          target_branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
