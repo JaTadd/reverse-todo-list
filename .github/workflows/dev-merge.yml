@@ -51,4 +51,3 @@ jobs:
           branch: dev-to-main
           commit-message: Merge dev into main
           title: Merge dev into main
-#testing lorem
