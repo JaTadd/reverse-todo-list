@@ -41,9 +41,9 @@ describe("E2E Test", function () {
 
   it("Should add a task", async function () {
     // Attendre que le port soit disponible
-    await waitForPort(3000, "frontend");
+    await waitForPort(3000, "localhost");
 
-    await driver.get("http://frontend:3000/");
+    await driver.get("http://localhost:3000/");
     await driver.manage().window().setRect({ width: 1510, height: 871 });
 
     // Attendre que l'input soit présent
