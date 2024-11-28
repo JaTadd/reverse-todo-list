@@ -40,6 +40,12 @@ jobs:
           cd frontend
           npm test
 
+      - name: Run end-to-end tests
+        run: |
+          cd e2e-tests
+          npm install
+          npm run e2e
+
       - name: Build Docker images
         run: docker-compose build
 
@@ -48,8 +54,3 @@ jobs:
 
       - name: Push Docker images to Docker Hub
         run: docker-compose push
-
-      - name: Run end-to-end tests
-        run: |
-          docker-compose up -d
-          docker-compose down
