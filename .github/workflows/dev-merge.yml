@@ -53,4 +53,7 @@ jobs:
               repo: context.repo.repo,
               head: "dev", // Branche source
               base: "main", // Branche cible
-              title: "Merge dev into main"
+              title: "Merge dev into main",
+              body: "This PR merges the latest changes from dev into main.",
+            });
+            console.log(`Pull request created: ${pullRequest.html_url}`);
