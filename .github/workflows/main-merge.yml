@@ -1,9 +1,11 @@
 name: worflow main
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows:
+      - worflow for dev
+    types:
+      - completed
 
 jobs:
   build-test-deploy:
