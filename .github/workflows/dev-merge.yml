@@ -48,6 +48,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: feature
-          branch: dev-to-main
+          branch: dev
           commit-message: Merge dev into main
           title: Merge dev into main
