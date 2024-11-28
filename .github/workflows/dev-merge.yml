@@ -47,9 +47,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          base: main
-          branch: dev
+          base: dev
+          branch: main
           commit-message: Merge dev into main
           title: Merge dev into main
-          body: |
-            This PR merges the latest changes from dev into main.
