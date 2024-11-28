@@ -43,7 +43,7 @@ jobs:
           cd frontend
           npm test
 
-      - name: Create Pull Request to Merge dev into main
+      - name: Merge dev into main
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
