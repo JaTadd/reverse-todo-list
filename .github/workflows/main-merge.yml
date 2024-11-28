@@ -1,7 +1,7 @@
 name: Dev to Main CI/CD
 
 on:
-  push:
+  merge:
     branches:
       - main
 
