@@ -47,7 +47,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          base: main
+          base: feature
           branch: dev-to-main
           commit-message: Merge dev into main
           title: Merge dev into main
