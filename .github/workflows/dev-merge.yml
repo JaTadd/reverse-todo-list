@@ -1,53 +1,55 @@
-name: worflow for dev
+name: worflow main
 
 on:
-  push:
-    branches:
-      - dev
+  workflow_run:
+    workflows:
+      - worflow for dev
+    types:
+      - completed
 
 jobs:
-  build-and-test:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js for Backend
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
-      - name: Install dependencies for Backend
+      - name: Install dependencies for backend
         run: |
           cd backend
           npm install
 
-      - name: Run Backend Unit Tests
+      - name: Run backend unit tests
         run: |
           cd backend
           npm test
 
-      - name: Setup Node.js for Frontend
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: Install dependencies for Frontend
+      - name: Install dependencies for frontend
         run: |
           cd frontend
           npm install
 
-      - name: Run Frontend Unit Tests
+      - name: Run frontend unit tests
         run: |
           cd frontend
           npm test
 
-      - name: Merge dev into main
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: dev
-          branch: main
-          commit-message: Merge dev into main
-          title: Merge dev into main
+      - name: Build Docker images
+        run: docker-compose build
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker images to Docker Hub
+        run: docker-compose push
+
+      - name: Run end-to-end tests
+        run: |
+          docker-compose up -d
+          docker-compose down
