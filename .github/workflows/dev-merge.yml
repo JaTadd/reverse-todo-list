@@ -33,7 +33,7 @@ jobs:
           cd frontend
           npm test
 
-      - name: Merge dev to main
+      - name: Merge feature to dev
         if: success()
         uses: devmasx/merge-branch@v1.3.0
         with:
