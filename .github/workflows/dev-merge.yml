@@ -51,3 +51,11 @@ jobs:
           branch: dev-to-main
           commit-message: Merge dev into main
           title: Merge dev into main
+
+      - name: Merge Pull Request Automatically
+        if: steps.create_pr.outputs.pull_request_number != ''
+        uses: peter-evans/merge-pull-request@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request: ${{ steps.create_pr.outputs.pull_request_number }}
+          merge-method: squash
