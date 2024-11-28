@@ -48,9 +48,9 @@ jobs:
         run: npm i -g mocha
 
       - name: Run end-to-end tests
+        working-directory: e2e-tests
         run: |
-          cd e2e-tests
-          npm test e2e
+          npm test
 
       - name: Build Docker images
         run: docker-compose build
