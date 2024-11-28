@@ -40,11 +40,17 @@ jobs:
           cd frontend
           npm test
 
+      - name: Install packages in the e2e-tests
+        working-directory: e2e-tests
+        run: npm i
+
+      - name: Install mocha globally for E2E tests
+        run: npm i -g mocha
+
       - name: Run end-to-end tests
         run: |
           cd e2e-tests
-          npm install
-          npm run e2e
+          npm test e2e
 
       - name: Build Docker images
         run: docker-compose build
