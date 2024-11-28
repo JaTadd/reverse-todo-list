@@ -44,10 +44,13 @@ jobs:
           npm test
 
       - name: Create Pull Request to Merge dev into main
-        uses: peter-evans/create-pull-request@v5
+        uses: actions/github-script@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: dev
-          branch: main
-          commit-message: Merge dev into main
-          title: Merge dev into main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: pullRequest } = await github.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: "dev", // Branche source
+              base: "main", // Branche cible
+              title: "Merge dev into main"
