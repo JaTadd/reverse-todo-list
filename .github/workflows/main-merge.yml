@@ -1,7 +1,7 @@
-name: Dev to Main CI/CD
+name: worflow main
 
 on:
-  merge:
+  push:
     branches:
       - main
 
