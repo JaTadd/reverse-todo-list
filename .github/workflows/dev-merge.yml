@@ -1,4 +1,4 @@
-name: Feature to Dev CI
+name: worflow for dev
 
 on:
   push:
@@ -13,29 +13,41 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies for backend
-        run: |
-          cd backend
-          npm install
-
-      - name: Run backend unit tests
-        run: |
-          cd backend
-          npm test
-
-      - name: Install dependencies for frontend
-        run: |
-          cd frontend
-          npm install
-
-      - name: Run frontend unit tests
-        run: |
-          cd frontend
-          npm test
-
-      - name: Merge feature to dev
-        if: success()
-        uses: devmasx/merge-branch@v1.3.0
+      - name: Setup Node.js for Backend
+        uses: actions/setup-node@v3
         with:
-          target_branch: main
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: 16
+
+      - name: Install dependencies for Backend
+        run: |
+          cd backend
+          npm install
+
+      - name: Run Backend Unit Tests
+        run: |
+          cd backend
+          npm test
+
+      - name: Setup Node.js for Frontend
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies for Frontend
+        run: |
+          cd frontend
+          npm install
+
+      - name: Run Frontend Unit Tests
+        run: |
+          cd frontend
+          npm test
+
+      - name: Create Pull Request to Merge dev into main
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: dev
+          branch: main
+          commit-message: Merge dev into main
+          title: Merge dev into main
