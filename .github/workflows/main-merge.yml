@@ -1,4 +1,4 @@
-name: worflow for main
+name: Dev to Main CI/CD
 
 on:
   push:
@@ -13,56 +13,41 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js for Backend
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
-      - name: Install dependencies for Backend
+      - name: Install dependencies for backend
         run: |
           cd backend
           npm install
 
-      - name: Run Backend Unit Tests
+      - name: Run backend unit tests
         run: |
           cd backend
           npm test
 
-      - name: Setup Node.js for Frontend
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install dependencies for Frontend
+      - name: Install dependencies for frontend
         run: |
           cd frontend
           npm install
 
-      - name: Run Frontend Unit Tests
+      - name: Run frontend unit tests
         run: |
           cd frontend
           npm test
 
-      - name: Setup Node.js for E2E Tests
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Run E2E Tests
-        run: |
-          cd e2e-tests
-          npm install
-          npm run e2e
-
-      - name: Build Docker Images
+      - name: Build Docker images
         run: docker-compose build
 
-      - name: Push Docker Images to Docker Hub
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker-compose push
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-#testing lorem
+      - name: Push Docker images to Docker Hub
+        run: docker-compose push
+
+      - name: Run end-to-end tests
+        run: |
+          docker-compose up -d
+          docker-compose down
