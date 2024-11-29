@@ -22,7 +22,7 @@ ARG MONGO_URL
 ENV MONGO_URL $MONGO_URL
 
 # Expose the backend port
-EXPOSE 3001
+EXPOSE 3000
 
 # Start the backend service
 CMD ["npm", "start"]
