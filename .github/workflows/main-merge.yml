@@ -48,6 +48,18 @@ jobs:
 
       - name: Push Docker images to Docker Hub
         run: docker-compose push
+              - name: Start Docker services
+        run: docker-compose up -d
+
+      - name: Wait for frontend to be ready
+        run: |
+          for i in {1..10}; do
+            nc -zv localhost 3001 && echo "Frontend is ready" && exit 0
+            echo "Waiting for frontend..."
+            sleep 5
+          done
+          echo "Frontend did not start in time" && exit 1
+
 
       - name: Install packages in the e2e-tests
         working-directory: e2e-tests
