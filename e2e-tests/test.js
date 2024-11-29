@@ -30,7 +30,7 @@ describe("E2E Test", function () {
   });
 
   it("Should add a task", async function () {
-    await driver.get("http://localhost:3000/");
+    await driver.get("http://localhost:3001/");
     await driver.manage().window().setRect({ width: 1510, height: 871 });
     await driver.findElement(By.css("input")).click();
     await driver.findElement(By.css("input")).sendKeys("this is a task");
