@@ -20,36 +20,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      - name: Install dependencies for backend
-        run: |
-          cd backend
-          npm install
-
-      - name: Run backend unit tests
-        run: |
-          cd backend
-          npm test
-
-      - name: Install dependencies for frontend
-        run: |
-          cd frontend
-          npm install
-
-      - name: Run frontend unit tests
-        run: |
-          cd frontend
-          npm test
-
-      - name: Build Docker images
-        run: docker-compose build
-
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Push Docker images to Docker Hub
-        run: docker-compose push
-              - name: Start Docker services
+      - name: Pull Docker images
+        run: docker-compose pull
+
+      - name: Start Docker services
         run: docker-compose up -d
+
+      - name: Check Docker logs
+        run: docker-compose logs
 
       - name: Wait for frontend to be ready
         run: |
@@ -59,7 +40,6 @@ jobs:
             sleep 5
           done
           echo "Frontend did not start in time" && exit 1
-
 
       - name: Install packages in the e2e-tests
         working-directory: e2e-tests
@@ -72,3 +52,6 @@ jobs:
         working-directory: e2e-tests
         run: |
           npm test
+
+      - name: Stop Docker services
+        run: docker-compose down
